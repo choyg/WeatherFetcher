@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">WeatherFetcher</string>
+
+    <!-- Add zipcode dialog -->
+    <string name="zipcode_title">Add New Zipcode</string>
+    <string name="zipcode_positive">Next</string>
+    <string name="zipcode_negative">Cancel</string>
+    <string name="zipcode_input_hint">Zipcode</string>
+
+    <!-- Confirm zipcode dialog -->
+    <string name="zipcode_confirm">Confirm New Zipcode</string>
+    <string name="zipcode_add">Add</string>
+    <string name="zipcode_cancel">Cancel</string>
 </resources>
