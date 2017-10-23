@@ -11,4 +11,10 @@
     <string name="zipcode_confirm">Confirm New Zipcode</string>
     <string name="zipcode_add">Add</string>
     <string name="zipcode_cancel">Cancel</string>
+    <string name="zipcode_ok">Ok</string>
+
+    <!-- Zipcode errors -->
+    <string name="zipcode_error_title">Error</string>
+    <string name="zipcode_error">Could not load zipcode</string>
+    <string name="zipcode_invalid">Zipcode is not valid</string>
 </resources>

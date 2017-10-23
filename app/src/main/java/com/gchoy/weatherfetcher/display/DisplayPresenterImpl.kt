@@ -6,6 +6,7 @@ import com.gchoy.weatherfetcher.zipcode.ZipcodeActionType
 import com.gchoy.weatherfetcher.zipcode.ZipcodeManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import retrofit2.HttpException
 
 class DisplayPresenterImpl(val view: DisplayView,
                            val zipcodeManager: ZipcodeManager,
@@ -24,31 +25,53 @@ class DisplayPresenterImpl(val view: DisplayView,
     }
 
     override fun addZipcode(zipcode: String) {
-        if (!validateZipcode(zipcode)) {
+        if (!zipcode.isValidZipcode()) {
             view.invalidZipcode()
-            println("Invalid zipcode")
             return
         }
         // Retrieve weather info for a valid zipcode
         // get info
         // Confirm info with add
-        view.confirmZipcode(zipcode)
-    }
-
-    override fun confirmZipcode(zipcode: String) {
-        // zipcodeObj = backend retrieve zipcode
-        val zipcodeObj = Zipcode("City name", zipcode.toInt(), 0.0, 0.0)
         compositeDispoable.add(weatherApi.getCurrentWeather(zipcode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ weather ->
-                    view.addZipcode(Zipcode(weather.name, zipcode.toInt(), weather.coord.lon, weather.coord.lat))
+                    val zip = Zipcode(weather.name, zipcode.toInt(), weather.coord.lon, weather.coord.lat)
+                    view.confirmZipcode(zip, weather)
                 }, { throwable ->
-                    throw throwable
+                    if (throwable is HttpException) {
+                        when (throwable.code()) {
+                            404 -> view.invalidZipcode()
+                        }
+                    } else {
+                        println(throwable)
+                        view.error()
+                    }
                 }))
     }
 
-    private fun validateZipcode(zipcode: String): Boolean {
-        return true // TODO
+    override fun confirmZipcode(zipcode: String) {
+        compositeDispoable.add(weatherApi.getCurrentWeather(zipcode)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ weather ->
+                    zipcodeManager.addZipcode(Zipcode(weather.name, zipcode.toInt(), weather.coord.lon, weather.coord.lat))
+                }, { throwable ->
+                    if (throwable is HttpException) {
+                        when (throwable.code()) {
+                            404 -> view.invalidZipcode()
+                        }
+                    } else {
+                        view.error()
+                    }
+                }))
+    }
+
+    private fun String.isValidZipcode(): Boolean {
+        try {
+            this.toInt()
+        } catch (ex: Exception) {
+            return false
+        }
+        return true
     }
 
     private fun setZipcodeStream() {

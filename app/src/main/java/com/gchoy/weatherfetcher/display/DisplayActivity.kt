@@ -6,8 +6,10 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import com.gchoy.weatherfetcher.BaseActivity
 import com.gchoy.weatherfetcher.R
+import com.gchoy.weatherfetcher.weather.Entities.Weather
 import com.gchoy.weatherfetcher.zipcode.Zipcode
 import com.gchoy.weatherfetcher.zipcode.ZipcodeManager
+import kotlinx.android.synthetic.main.confirm_layout.*
 import kotlinx.android.synthetic.main.display_layout.*
 import kotlinx.android.synthetic.main.zipcode_input.*
 
@@ -41,7 +43,7 @@ class DisplayActivity : DisplayView, BaseActivity() {
     }
 
     override fun promptZipcode() {
-        val dialog = AlertDialog.Builder(this)
+        AlertDialog.Builder(this)
                 .setTitle(R.string.zipcode_title)
                 .setView(R.layout.zipcode_input)
                 .setPositiveButton(R.string.zipcode_positive, { dialogInterface: DialogInterface, i: Int ->
@@ -50,23 +52,34 @@ class DisplayActivity : DisplayView, BaseActivity() {
                 })
                 .setNegativeButton(R.string.zipcode_negative, null)
                 .create()
-        dialog.show()
+                .show()
     }
 
-    override fun confirmZipcode(zipcode: String) {
+    override fun confirmZipcode(zipcode: Zipcode, weather: Weather) {
         val dialog = AlertDialog.Builder(this)
-                .setTitle(R.string.zipcode_confirm)
-                .setView(R.layout.zipcode_input)
+                .setTitle(zipcode.zipcode.toString())
+                .setView(R.layout.confirm_layout)
                 .setPositiveButton(R.string.zipcode_add, { dialogInterface: DialogInterface, i: Int ->
-                    presenter.confirmZipcode(zipcode)
+                    presenter.confirmZipcode(zipcode.zipcode.toString())
                 })
                 .setNegativeButton(R.string.zipcode_cancel, null)
                 .create()
         dialog.show()
+        dialog.confirm_city.text = weather.name
+        dialog.confirm_current.text = weather.main.temp.toString()
     }
 
     override fun invalidZipcode() {
+        error(R.string.zipcode_invalid)
+    }
 
+    override fun error(messageId: Int) {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.zipcode_error_title)
+                .setMessage(messageId)
+                .setPositiveButton(R.string.zipcode_ok, null)
+                .create()
+                .show()
     }
 
     override fun setRVAdapter(data: List<Zipcode>) {
@@ -77,7 +90,6 @@ class DisplayActivity : DisplayView, BaseActivity() {
     private fun setListeners() {
         display_fab.setOnClickListener { promptZipcode() }
     }
-
 
     private fun setDependencies() {
         zipcodeManager = getZipcodeManager(this)

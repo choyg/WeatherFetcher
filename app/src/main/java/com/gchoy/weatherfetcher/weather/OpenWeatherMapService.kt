@@ -7,5 +7,8 @@ import retrofit2.http.Query
 
 interface OpenWeatherMapService {
     @GET("weather")
-    fun getCurrentWeather(@Query("zip") zip: String, @Query("appid") key: String): Observable<Weather>
+    fun getCurrentWeather(@Query("zip") zip: String,
+                          @Query("appid") key: String,
+                          @Query("units") units: String = "imperial"
+    ): Observable<Weather>
 }
