@@ -38,3 +38,6 @@ captures/
 # Intellij
 .idea/
 *.iml
+
+# API Keys
+keys.xml
