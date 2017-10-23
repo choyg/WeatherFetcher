@@ -7,6 +7,6 @@ public class Wind {
     @Json(name = "speed")
     public double speed;
     @Json(name = "deg")
-    public int deg;
+    public double deg;
 
 }

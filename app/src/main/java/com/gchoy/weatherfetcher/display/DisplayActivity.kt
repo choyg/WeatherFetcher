@@ -81,7 +81,7 @@ class DisplayActivity : DisplayView, BaseActivity() {
 
     private fun setDependencies() {
         zipcodeManager = getZipcodeManager(this)
-        presenter = DisplayPresenterImpl(this, zipcodeManager)
+        presenter = DisplayPresenterImpl(this, zipcodeManager, getWeatherApi())
     }
 
 }

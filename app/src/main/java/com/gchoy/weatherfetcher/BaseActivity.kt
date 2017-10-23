@@ -3,6 +3,7 @@ package com.gchoy.weatherfetcher
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import com.f2prateek.rx.preferences2.RxSharedPreferences
+import com.gchoy.weatherfetcher.weather.WeatherApi
 import com.gchoy.weatherfetcher.zipcode.ZipcodeManager
 import io.reactivex.disposables.CompositeDisposable
 
@@ -19,4 +20,7 @@ open class BaseActivity : AppCompatActivity() {
 
     protected fun getSharedPref(context: Context): RxSharedPreferences =
             WeatherApplication.getSharedPref(context)
+
+    protected fun getWeatherApi(): WeatherApi =
+            (application as WeatherApplication).getWeatherApi()
 }

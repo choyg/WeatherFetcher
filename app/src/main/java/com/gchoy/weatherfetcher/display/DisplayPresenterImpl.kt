@@ -1,11 +1,16 @@
 package com.gchoy.weatherfetcher.display
 
+import com.gchoy.weatherfetcher.weather.WeatherApi
 import com.gchoy.weatherfetcher.zipcode.Zipcode
 import com.gchoy.weatherfetcher.zipcode.ZipcodeActionType
 import com.gchoy.weatherfetcher.zipcode.ZipcodeManager
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 
-class DisplayPresenterImpl(val view: DisplayView, val zipcodeManager: ZipcodeManager) : DisplayPresenter {
+class DisplayPresenterImpl(val view: DisplayView,
+                           val zipcodeManager: ZipcodeManager,
+                           val weatherApi: WeatherApi
+) : DisplayPresenter {
 
     private val compositeDispoable = CompositeDisposable()
 
@@ -33,7 +38,13 @@ class DisplayPresenterImpl(val view: DisplayView, val zipcodeManager: ZipcodeMan
     override fun confirmZipcode(zipcode: String) {
         // zipcodeObj = backend retrieve zipcode
         val zipcodeObj = Zipcode("City name", zipcode.toInt(), 0.0, 0.0)
-        zipcodeManager.addZipcode(zipcodeObj)
+        compositeDispoable.add(weatherApi.getCurrentWeather(zipcode)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ weather ->
+                    view.addZipcode(Zipcode(weather.name, zipcode.toInt(), weather.coord.lon, weather.coord.lat))
+                }, { throwable ->
+                    throw throwable
+                }))
     }
 
     private fun validateZipcode(zipcode: String): Boolean {
