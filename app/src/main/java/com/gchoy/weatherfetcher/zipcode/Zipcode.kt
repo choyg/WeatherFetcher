@@ -33,6 +33,8 @@ data class Zipcode(val name: String, val zipcode: Int, val longitutde: Double, v
         return false
     }
 
+    override fun hashCode(): Int = this.zipcode.hashCode()
+
     companion object CREATOR : Parcelable.Creator<Zipcode> {
         override fun createFromParcel(parcel: Parcel): Zipcode {
             return Zipcode(parcel)
