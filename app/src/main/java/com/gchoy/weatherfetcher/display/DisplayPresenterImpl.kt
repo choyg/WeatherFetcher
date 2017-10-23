@@ -32,7 +32,7 @@ class DisplayPresenterImpl(val view: DisplayView, val zipcodeManager: ZipcodeMan
 
     override fun confirmZipcode(zipcode: String) {
         // zipcodeObj = backend retrieve zipcode
-        val zipcodeObj = Zipcode("City name", 92130, 0.0, 0.0)
+        val zipcodeObj = Zipcode("City name", zipcode.toInt(), 0.0, 0.0)
         zipcodeManager.addZipcode(zipcodeObj)
     }
 

@@ -15,7 +15,7 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     protected fun getZipcodeManager(context: Context): ZipcodeManager =
-            WeatherApplication.getBookmarkManager(context)
+            (application as WeatherApplication).getZipcodeManager()
 
     protected fun getSharedPref(context: Context): RxSharedPreferences =
             WeatherApplication.getSharedPref(context)

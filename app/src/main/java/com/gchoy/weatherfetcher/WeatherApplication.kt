@@ -11,11 +11,10 @@ import com.squareup.moshi.Moshi
 class WeatherApplication : Application() {
     companion object {
 
-        private val moshiStatic = Moshi.Builder()
-                .build()
+        private val moshiStatic = Moshi.Builder().build()
 
-        fun getBookmarkManager(context: Context): ZipcodeManager =
-                ZipcodeManagerSharedPref(getSharedPref(context))
+        private fun zipcodeManager(context: Context): ZipcodeManager =
+                ZipcodeManagerSharedPref(getSharedPref(context), moshiStatic)
 
         fun getSharedPref(context: Context): RxSharedPreferences {
             val preferences = RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(context))
@@ -23,4 +22,13 @@ class WeatherApplication : Application() {
             return rxPreferences
         }
     }
+
+    private lateinit var zipcodeManager: ZipcodeManager
+    fun getZipcodeManager(): ZipcodeManager = zipcodeManager
+
+    override fun onCreate() {
+        super.onCreate()
+        zipcodeManager = Companion.zipcodeManager(this)
+    }
+
 }
