@@ -8,6 +8,8 @@ import com.gchoy.weatherfetcher.weather.WeatherApi
 import com.gchoy.weatherfetcher.zipcode.ZipcodeManager
 import com.gchoy.weatherfetcher.zipcode.ZipcodeManagerSharedPref
 import com.squareup.moshi.Moshi
+import okhttp3.Cache
+import okhttp3.OkHttpClient
 
 class WeatherApplication : Application() {
     companion object {
@@ -17,9 +19,25 @@ class WeatherApplication : Application() {
         private fun zipcodeManager(context: Context): ZipcodeManager =
                 ZipcodeManagerSharedPref(getSharedPref(context), moshiStatic)
 
-        private fun weatherApi(apiKey: String): WeatherApi {
+        private fun okHttp(context: Context): OkHttpClient {
+            val cacheSize = 10 * 1024 * 1024L // 10MB
+            val cacheTime = 60 * 60 // 1 hour
+            return OkHttpClient.Builder()
+                    .cache(Cache(context.cacheDir, cacheSize))
+                    .addNetworkInterceptor { chain ->
+                        val request = chain.request()
+                        val response = chain.proceed(request)
+                                .newBuilder()
+                                .addHeader("Cache-Control", "max-age=" + cacheTime)
+                                .build()
+                        response
+                    }
+                    .build()
+        }
+
+        private fun weatherApi(apiKey: String, context: Context): WeatherApi {
             val api = WeatherApi
-            api.register(apiKey, moshiStatic)
+            api.register(apiKey, moshiStatic, okHttp(context))
             return api
         }
 
@@ -38,7 +56,7 @@ class WeatherApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         zipcodeManager = Companion.zipcodeManager(this)
-        weatherAPI = Companion.weatherApi(getString(R.string.openweathermap_key))
+        weatherAPI = Companion.weatherApi(getString(R.string.openweathermap_key), this)
     }
 
 }
