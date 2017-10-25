@@ -8,20 +8,22 @@ import com.gchoy.weatherfetcher.R
 import com.gchoy.weatherfetcher.zipcode.Zipcode
 import kotlinx.android.synthetic.main.zipcode_tile.view.*
 
-class DisplayRVAdapter(initialData: List<Zipcode>) : RecyclerView.Adapter<DisplayRVAdapter.ZipcodeViewHolder>() {
+class DisplayRVAdapter(initialData: List<Zipcode>, val listener: ZipcodeClickListener
+) : RecyclerView.Adapter<DisplayRVAdapter.ZipcodeViewHolder>() {
 
     private val data = initialData.toMutableList()
 
     override fun onBindViewHolder(holder: ZipcodeViewHolder, position: Int) {
         val zipcodeInfo = data[position]
-        holder.zipcode.text = zipcodeInfo.zipcode.toString()
+        holder.zipcodeText.text = zipcodeInfo.zipcode.toString()
+        holder.zipcode = zipcodeInfo
     }
 
     override fun getItemCount(): Int = data.size
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ZipcodeViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
-        return ZipcodeViewHolder(layoutInflater.inflate(R.layout.zipcode_tile, parent, false))
+        return ZipcodeViewHolder(layoutInflater.inflate(R.layout.zipcode_tile, parent, false), listener)
     }
 
     fun addZipcode(zipcode: Zipcode) {
@@ -29,7 +31,16 @@ class DisplayRVAdapter(initialData: List<Zipcode>) : RecyclerView.Adapter<Displa
         notifyItemInserted(data.lastIndex)
     }
 
-    class ZipcodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val zipcode = itemView.zipcode_text
+    class ZipcodeViewHolder(itemView: View, val listener: ZipcodeClickListener) : RecyclerView.ViewHolder(itemView) {
+        val zipcodeText = itemView.zipcode_text
+        lateinit var zipcode: Zipcode
+
+        init {
+            itemView.setOnClickListener { listener.onClick(zipcode) }
+        }
+    }
+
+    interface ZipcodeClickListener {
+        fun onClick(zipcode: Zipcode)
     }
 }

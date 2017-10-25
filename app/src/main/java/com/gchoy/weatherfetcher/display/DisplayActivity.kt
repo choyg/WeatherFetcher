@@ -1,12 +1,15 @@
 package com.gchoy.weatherfetcher.display
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.gchoy.weatherfetcher.BaseActivity
+import com.gchoy.weatherfetcher.Keys
 import com.gchoy.weatherfetcher.R
+import com.gchoy.weatherfetcher.details.DetailsActivity
 import com.gchoy.weatherfetcher.weather.Entities.Weather
 import com.gchoy.weatherfetcher.zipcode.Zipcode
 import com.gchoy.weatherfetcher.zipcode.ZipcodeManager
@@ -15,14 +18,13 @@ import kotlinx.android.synthetic.main.display_layout.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.android.synthetic.main.zipcode_input.*
 
-class DisplayActivity : DisplayView, BaseActivity() {
+class DisplayActivity : DisplayView, DisplayRVAdapter.ZipcodeClickListener, BaseActivity() {
 
     private lateinit var presenter: DisplayPresenter
     private lateinit var zipcodeManager: ZipcodeManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println(System.currentTimeMillis())
         setContentView(R.layout.display_layout)
         setDependencies()
         setActionbar()
@@ -91,8 +93,14 @@ class DisplayActivity : DisplayView, BaseActivity() {
     }
 
     override fun setRVAdapter(data: List<Zipcode>) {
-        display_recycler.adapter = DisplayRVAdapter(data)
+        display_recycler.adapter = DisplayRVAdapter(data, this)
         display_recycler.layoutManager = LinearLayoutManager(this)
+    }
+
+    override fun onClick(zipcode: Zipcode) {
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.putExtra(Keys.zipcode, zipcode)
+        startActivity(intent)
     }
 
     private fun setListeners() {
