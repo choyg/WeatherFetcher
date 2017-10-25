@@ -5,6 +5,7 @@ import android.content.Context
 import android.preference.PreferenceManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.gchoy.weatherfetcher.weather.WeatherApi
+import com.gchoy.weatherfetcher.zipcode.Zipcode
 import com.gchoy.weatherfetcher.zipcode.ZipcodeManager
 import com.gchoy.weatherfetcher.zipcode.ZipcodeManagerSharedPref
 import com.squareup.moshi.Moshi
@@ -57,6 +58,27 @@ class WeatherApplication : Application() {
         super.onCreate()
         zipcodeManager = Companion.zipcodeManager(this)
         weatherAPI = Companion.weatherApi(getString(R.string.openweathermap_key), this)
+        prepopulate()
     }
 
+    /**
+     *  If this is the user's first time running WeatherFetcher
+     *  prepopulate with 3 unique entries
+     */
+    private fun prepopulate() {
+        val sharedPref = getSharedPref(this)
+        val firstTime = sharedPref.getBoolean(Keys.firstInstall, true)
+        if (!firstTime.get()) return
+
+        val zipcode1 = Zipcode("San Diego", 92130, -117.17, 32.8)
+        val zipcode2 = Zipcode("Austin", 73301, -97.77, 30.33)
+        val zipcode3 = Zipcode("Washington", 20001, -77.02, 38.91)
+
+        val zipcodeManager = getZipcodeManager()
+        zipcodeManager.addZipcode(zipcode1)
+        zipcodeManager.addZipcode(zipcode2)
+        zipcodeManager.addZipcode(zipcode3)
+
+        firstTime.set(false)
+    }
 }
