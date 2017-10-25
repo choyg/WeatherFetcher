@@ -66,7 +66,7 @@ class DisplayActivity : DisplayView, BaseActivity() {
                 .create()
         dialog.show()
         dialog.confirm_city.text = weather.name
-        dialog.confirm_current.text = weather.main.temp.toString()
+        dialog.confirm_current.text = getString(R.string.temperature_fahrenheit, weather.main.temp.toString())
     }
 
     override fun invalidZipcode() {

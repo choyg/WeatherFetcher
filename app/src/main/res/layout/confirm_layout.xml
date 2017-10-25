@@ -21,6 +21,6 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
-        tools:text="63.0"/>
+        tools:text="63.0°F"/>
 
 </LinearLayout>
