@@ -24,4 +24,5 @@
 
     <!-- Temperature -->
     <string name="temperature_fahrenheit">%1$s°F</string>
+        <string name="temperature_range">Expected temperatures from %1$s°F to %2$s°F</string>
 </resources>

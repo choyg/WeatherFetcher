@@ -13,7 +13,7 @@ class DisplayPresenterImpl(val view: DisplayView,
                            val weatherApi: WeatherApi
 ) : DisplayPresenter {
 
-    private val compositeDispoable = CompositeDisposable()
+private val compositeDispoable = CompositeDisposable()
 
     override fun attachView() {
         view.setRVAdapter(zipcodeManager.getZipcodes())

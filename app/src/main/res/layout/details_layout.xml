@@ -7,6 +7,15 @@
 
     <include layout="@layout/toolbar"/>
 
+    <TextView
+        android:id="@+id/details_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:visibility="gone"
+        tools:text="@string/zipcode_error"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
