@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.gchoy.weatherfetcher.BaseActivity
 import com.gchoy.weatherfetcher.R
 import com.gchoy.weatherfetcher.weather.Entities.Weather
@@ -67,6 +68,10 @@ class DisplayActivity : DisplayView, BaseActivity() {
         dialog.show()
         dialog.confirm_city.text = weather.name
         dialog.confirm_current.text = getString(R.string.temperature_fahrenheit, weather.main.temp.toString())
+        Glide.with(dialog.context)
+                .load(weather.getIconUrl())
+                .centerCrop()
+                .into(dialog.confirm_icon)
     }
 
     override fun invalidZipcode() {

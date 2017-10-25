@@ -43,7 +43,7 @@ class DisplayPresenterImpl(val view: DisplayView,
                             404 -> view.invalidZipcode()
                         }
                     } else {
-                        println(throwable)
+                        throwable.printStackTrace()
                         view.error()
                     }
                 }))
@@ -60,6 +60,7 @@ class DisplayPresenterImpl(val view: DisplayView,
                             404 -> view.invalidZipcode()
                         }
                     } else {
+                        throwable.printStackTrace()
                         view.error()
                     }
                 }))

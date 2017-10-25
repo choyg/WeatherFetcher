@@ -15,4 +15,6 @@ data class Weather(
         @Json(name = "id") val id: Int,
         @Json(name = "name") val name: String,
         @Json(name = "cod") val cod: Int = 0
-)
+) {
+    fun getIconUrl(): String = "http://openweathermap.org/img/w/${weather[0].icon}.png"
+}
