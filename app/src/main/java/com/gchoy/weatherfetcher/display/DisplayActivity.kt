@@ -22,6 +22,7 @@ class DisplayActivity : DisplayView, BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        println(System.currentTimeMillis())
         setContentView(R.layout.display_layout)
         setDependencies()
         setActionbar()
