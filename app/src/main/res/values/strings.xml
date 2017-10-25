@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">WeatherFetcher</string>
 
+    <!-- Zipcode Display -->
+    <string name="display_title">Zipcodes</string>
+
     <!-- Add zipcode dialog -->
     <string name="zipcode_title">Add New Zipcode</string>
     <string name="zipcode_positive">Next</string>

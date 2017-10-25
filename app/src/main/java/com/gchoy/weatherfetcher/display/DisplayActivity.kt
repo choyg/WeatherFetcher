@@ -12,6 +12,7 @@ import com.gchoy.weatherfetcher.zipcode.Zipcode
 import com.gchoy.weatherfetcher.zipcode.ZipcodeManager
 import kotlinx.android.synthetic.main.confirm_layout.*
 import kotlinx.android.synthetic.main.display_layout.*
+import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.android.synthetic.main.zipcode_input.*
 
 class DisplayActivity : DisplayView, BaseActivity() {
@@ -23,6 +24,7 @@ class DisplayActivity : DisplayView, BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.display_layout)
         setDependencies()
+        setActionbar()
         setListeners()
         presenter.attachView()
     }
@@ -99,6 +101,11 @@ class DisplayActivity : DisplayView, BaseActivity() {
     private fun setDependencies() {
         zipcodeManager = getZipcodeManager(this)
         presenter = DisplayPresenterImpl(this, zipcodeManager, getWeatherApi())
+    }
+
+    private fun setActionbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = getString(R.string.display_title)
     }
 
 }
