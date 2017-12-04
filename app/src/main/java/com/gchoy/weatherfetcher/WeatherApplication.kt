@@ -70,9 +70,9 @@ class WeatherApplication : Application() {
         val firstTime = sharedPref.getBoolean(Keys.firstInstall, true)
         if (!firstTime.get()) return
 
-        val zipcode1 = Zipcode("San Diego", 92130, -117.17, 32.8)
-        val zipcode2 = Zipcode("Austin", 73301, -97.77, 30.33)
-        val zipcode3 = Zipcode("Washington", 20001, -77.02, 38.91)
+        val zipcode1 = Zipcode("San Diego", "92130", -117.17, 32.8)
+        val zipcode2 = Zipcode("Austin", "73301", -97.77, 30.33)
+        val zipcode3 = Zipcode("Washington", "20001", -77.02, 38.91)
 
         val zipcodeManager = getZipcodeManager()
         zipcodeManager.addZipcode(zipcode1)

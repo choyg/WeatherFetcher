@@ -35,7 +35,7 @@ private val compositeDispoable = CompositeDisposable()
         compositeDispoable.add(weatherApi.getCurrentWeather(zipcode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ weather ->
-                    val zip = Zipcode(weather.name, zipcode.toInt(), weather.coord.lon, weather.coord.lat)
+                    val zip = Zipcode(weather.name, zipcode, weather.coord.lon, weather.coord.lat)
                     view.confirmZipcode(zip, weather)
                 }, { throwable ->
                     if (throwable is HttpException) {
@@ -53,7 +53,7 @@ private val compositeDispoable = CompositeDisposable()
         compositeDispoable.add(weatherApi.getCurrentWeather(zipcode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ weather ->
-                    zipcodeManager.addZipcode(Zipcode(weather.name, zipcode.toInt(), weather.coord.lon, weather.coord.lat))
+                    zipcodeManager.addZipcode(Zipcode(weather.name, zipcode, weather.coord.lon, weather.coord.lat))
                 }, { throwable ->
                     if (throwable is HttpException) {
                         when (throwable.code()) {

@@ -7,17 +7,17 @@ import android.os.Parcelable
  * Representation of a zipcode per OpenWeatherMap.
  * Most analogous to a City.
  */
-data class Zipcode(val name: String, val zipcode: Int, val longitutde: Double, val latitude: Double) : Parcelable {
+data class Zipcode(val name: String, val zipcode: String, val longitutde: Double, val latitude: Double) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readString(),
-            parcel.readInt(),
+            parcel.readString(),
             parcel.readDouble(),
             parcel.readDouble()) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
-        parcel.writeInt(zipcode)
+        parcel.writeString(zipcode)
         parcel.writeDouble(longitutde)
         parcel.writeDouble(latitude)
     }
